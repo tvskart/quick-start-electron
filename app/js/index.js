@@ -1,4 +1,10 @@
 (function(){
+    let {ipcRenderer} = require('electron');  
+    ipcRenderer.send('async-data', 1);
+    let closeBtn = document.querySelector('#utility-close');
+    closeBtn.addEventListener('click', function(){
+        const kill = ipcRenderer.send('close-main-window');
+    });
     const container = document.querySelector('#music-buttons');
 
     const buttons_container = document.createElement('div');

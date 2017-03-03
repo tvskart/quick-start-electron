@@ -5,6 +5,19 @@ const url = require('url');
 
 let win; //global reference prevents garbage collection?
 
+//respond to async msgs from renderer
+ipcMain.on('close-main-window', (event, arg) => {
+    app.quit();
+    event.returnValue = null; //sync reply
+});
+
+ipcMain.on('async-data', (event, arg) => {
+    console.log(arg); //data perhaps
+
+    let response = 'status:200';
+    event.sender.send('async-reply', response);
+});
+
 const createWindow = () => {
     const width = 800;
     const height = 800;
@@ -50,9 +63,4 @@ app.on('activate', () => {
     createWindow()
   }
 });
-
-// ipc.on('close-main-window', () => {
-//     app.quit();
-// });
-
 })();
