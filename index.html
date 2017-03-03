@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Quick Start Tutorial</title>
+        <link href="app/css/index.css" rel="stylesheet" type="text/css" /><!-- rel field required it seems-->
+    </head>
+    <body>
+        <h1>Hello there</h1>
+        We are using node <script>document.write(process.versions.node)</script>,
+        Chrome <script>document.write(process.versions.chrome)</script>,
+        and Electron <script>document.write(process.versions.electron)</script>.
+        <div id="music-buttons"></div>
+        <!--<script src="./app/js/index.js" rel="script" type="text/javascript" />-->
+        <script>
+            require('./app/js/index')
+        </script>
+    </body>
+</html>
