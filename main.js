@@ -1,22 +1,33 @@
 (()=>{
-const {app, BrowserWindow, ipcMain} = require('electron');
+const {app, BrowserWindow, ipcMain, globalShortcut} = require('electron');
 const path = require('path');
 const url = require('url');
 
 let win; //global reference prevents garbage collection?
 
-//respond to async msgs from renderer
-ipcMain.on('close-main-window', (event, arg) => {
-    app.quit();
-    event.returnValue = null; //sync reply
-});
+const registerMessages = () => {
+    //respond to async msgs from renderer
+    ipcMain.on('close-main-window', (event, arg) => {
+        app.quit();
+        event.returnValue = null; //sync reply
+    });
 
-ipcMain.on('async-data', (event, arg) => {
-    console.log(arg); //data perhaps
+    ipcMain.on('async-data', (event, arg) => {
+        console.log(arg); //data perhaps
 
-    let response = 'status:200';
-    event.sender.send('async-reply', response);
-});
+        let response = 'status:200';
+        event.sender.send('async-reply', response);
+    });    
+}
+registerMessages();
+
+const registerShortcuts = () => {
+    globalShortcut.register('CommandOrControl+1', () => {
+        if(win) {
+            win.webContents.send('global-shortcut'); //async like
+        }
+    });
+};
 
 const createWindow = () => {
     const width = 800;
@@ -46,7 +57,14 @@ const loadPage = (window, page) => {
 }
 
 //once electron is up
-app.on('ready', createWindow);
+app.on('ready', () => {
+    registerShortcuts();
+    createWindow();
+});
+
+app.on('will-quit', () => {
+    globalShortcut.unregisterAll();
+});
 
 //weird mac code
 app.on('window-all-closed', () => {

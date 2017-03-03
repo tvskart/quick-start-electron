@@ -45,4 +45,11 @@
     });
     console.log(sounds);
     sounds.forEach(div => buttons_container.appendChild(div));
+
+    ipcRenderer.on('global-shortcut', () => {
+        let event = new MouseEvent('click');
+        const max = sounds.length;
+        const i = parseInt(max * Math.random());
+        sounds[(i > 1) ? i - 1: 0].dispatchEvent(event);
+    });
 })();
