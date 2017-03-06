@@ -3,6 +3,10 @@ html, body {
     background-color: skyblue;
 }
 
+#utility-buttons {
+    cursor: pointer;
+}
+
 .button-sound {
     margin: 40px;
     background-color: #0C7CA2;

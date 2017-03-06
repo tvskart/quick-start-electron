@@ -10,7 +10,12 @@
         Chrome <script>document.write(process.versions.chrome)</script>,
         and Electron <script>document.write(process.versions.electron)</script>.
         <div id="utility-buttons">
-            <span id="utility-close">Click to Close App</span>
+            <div id="utility-close">Click to Close App</div>
+            <div id="utility-save">Click to save settings</div>
+            <div id="utility-settings">
+                <label for="utility-shortcut">Shortcut Number -> </label>
+                <input type="number" min="0" max="9" value="1" id="utility-shortcut"></input>
+            </div>
         </div>
         <div id="music-buttons"></div>
         <!--<script src="./app/js/index.js" rel="script" type="text/javascript" />-->

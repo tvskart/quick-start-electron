@@ -2,6 +2,7 @@
 const {app, BrowserWindow, ipcMain, globalShortcut} = require('electron');
 const path = require('path');
 const url = require('url');
+const conf = require('./conf');
 
 let win; //global reference prevents garbage collection?
 
@@ -22,11 +23,23 @@ const registerMessages = () => {
 registerMessages();
 
 const registerShortcuts = () => {
-    globalShortcut.register('CommandOrControl+1', () => {
-        if(win) {
-            win.webContents.send('global-shortcut'); //async like
-        }
-    });
+    const defaultShortcutKey1 = 1;
+    if(!conf.readSettings('shortcut-key1')) {
+        conf.saveSettings('shortcut-key1', defaultShortcutKey1);
+    }
+
+    //unregister all first
+    globalShortcut.unregisterAll();
+
+    const shortcutKey1 = conf.readSettings('shortcut-key1');
+    if(typeof shortcutKey1 == 'number') {
+        globalShortcut.register(`CommandOrControl+${shortcutKey1}`, () => {
+            if(win) {
+                win.webContents.send('global-shortcut'); //async like
+            }
+        });
+    }
+
 };
 
 const createWindow = () => {
