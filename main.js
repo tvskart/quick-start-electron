@@ -18,7 +18,16 @@ const registerMessages = () => {
 
         let response = 'status:200';
         event.sender.send('async-reply', response);
-    });    
+    }); 
+
+    ipcMain.on('update-shortcut-key1', (event, arg) => {
+        //set new conf value
+        if(typeof arg == 'number' && arg >= 1 && arg <= 9) {
+            conf.saveSettings('shortcut-key1', arg);
+        }
+        //update shortcuts registered
+        registerShortcuts();
+    }); 
 }
 registerMessages();
 
